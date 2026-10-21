@@ -1,0 +1,39 @@
+
+name: Build Genesis Plus GX for Wii
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Makefile.wii'
+      - 'core/**'
+      - 'gx/**'
+      - '.github/workflows/build-wii.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build Wii DOL
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/work" \
+            -w /work \
+            devkitpro/devkitppc:20260503 \
+            bash -lc 'make -f Makefile.wii'
+
+      - name: Upload Wii build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Genesis-Plus-GX-Wii-Original
+          path: genplus_wii.dol
+          if-no-files-found: error
