@@ -127,6 +127,10 @@
 #include "shared.h"
 #include "z80.h"
 
+#ifdef DEC
+#undef DEC
+#endif
+
 /* execute main opcodes inside a big switch statement */
 #define BIG_SWITCH 1
 
