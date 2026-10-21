@@ -149,6 +149,9 @@
 
 #include "shared.h"
 
+#ifdef TBL
+#undef TBL
+#endif
 /* envelope generator */
 #define ENV_BITS    10
 #define ENV_LEN      (1<<ENV_BITS)
