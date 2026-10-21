@@ -28,7 +28,7 @@ jobs:
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/work" \
             -w /work \
-            devkitpro/devkitppc:20260503 \
+            devkitpro/devkitppc:20241116 \
             bash -lc 'make -f Makefile.wii'
 
       - name: Upload Wii build
