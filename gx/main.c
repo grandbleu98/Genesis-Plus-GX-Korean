@@ -541,11 +541,7 @@ int main (int argc, char *argv[])
     SILENT = 0;
   }
 
-  /* show disclaimer before entering menu */
-  if (ConfigRequested)
-  {
-    legal();
-  }
+  /* Startup disclaimer skipped in this customized build. */
 
   /* initialize stub loader detection */
   reload = 0;
