@@ -27,7 +27,7 @@ for codepoint in range(FIRST, LAST + 1):
         for byte_x in range(2):
             value = 0
             for bit in range(8):
-                if pixels[byte_x * 8 + bit, y] >= 96:
+                if pixels[byte_x * 8 + bit, y] >= 112:
                     value |= 0x80 >> bit
             packed.append(value)
     rows.append("  { " + ", ".join(f"0x{value:02X}" for value in packed) + " },")
