@@ -12,13 +12,15 @@ LAST = 0xD7A3
 FONT_PATH = "/usr/share/fonts/truetype/nanum/NanumGothic.ttf"
 OUT = Path("gx/gui/hangul_font_data.h")
 
-font = ImageFont.truetype(FONT_PATH, 16)
+SCALE = 2
+font = ImageFont.truetype(FONT_PATH, 16 * SCALE)
 rows = []
 for codepoint in range(FIRST, LAST + 1):
-    image = Image.new("L", (16, 16), 0)
+    image = Image.new("L", (16 * SCALE, 16 * SCALE), 0)
     draw = ImageDraw.Draw(image)
     # A 1-pixel white stroke thickens the 1-bpp glyphs for better readability on Wii.
-    draw.text((8, 8), chr(codepoint), font=font, fill=255, anchor="mm", stroke_width=1, stroke_fill=255)
+    draw.text((8 * SCALE, 8 * SCALE), chr(codepoint), font=font, fill=255, anchor="mm", stroke_width=1, stroke_fill=255)
+    image = image.resize((16, 16), Image.Resampling.LANCZOS)
     pixels = image.load()
     packed = []
     for y in range(16):
