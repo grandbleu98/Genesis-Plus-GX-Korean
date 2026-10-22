@@ -66,13 +66,13 @@ static unsigned int FONT_decodeUTF8(const unsigned char *s, int *bytes)
 {
   unsigned int c = s[0];
   if (c < 0x80) { *bytes = 1; return c; }
-  if ((c & 0xe0) == 0xc0 && (s[1] & 0xc0) == 0x80) {
+  if ((c & 0xe0) == 0xc0 && s[1] && (s[1] & 0xc0) == 0x80) {
     *bytes = 2; return ((c & 0x1f) << 6) | (s[1] & 0x3f);
   }
-  if ((c & 0xf0) == 0xe0 && (s[1] & 0xc0) == 0x80 && (s[2] & 0xc0) == 0x80) {
+  if ((c & 0xf0) == 0xe0 && s[1] && s[2] && (s[1] & 0xc0) == 0x80 && (s[2] & 0xc0) == 0x80) {
     *bytes = 3; return ((c & 0x0f) << 12) | ((s[1] & 0x3f) << 6) | (s[2] & 0x3f);
   }
-  if ((c & 0xf8) == 0xf0 && (s[1] & 0xc0) == 0x80 && (s[2] & 0xc0) == 0x80 && (s[3] & 0xc0) == 0x80) {
+  if ((c & 0xf8) == 0xf0 && s[1] && s[2] && s[3] && (s[1] & 0xc0) == 0x80 && (s[2] & 0xc0) == 0x80 && (s[3] & 0xc0) == 0x80) {
     *bytes = 4; return ((c & 7) << 18) | ((s[1] & 0x3f) << 12) | ((s[2] & 0x3f) << 6) | (s[3] & 0x3f);
   }
   *bytes = 1;
