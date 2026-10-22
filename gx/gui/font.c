@@ -146,7 +146,11 @@ static void FONT_drawCodepoint(unsigned int codepoint, int xpos, int ypos, int s
   if (codepoint >= HANGUL_GLYPH_FIRST && codepoint < HANGUL_GLYPH_FIRST + HANGUL_GLYPH_COUNT)
     DrawHangul(codepoint, xpos, ypos, size, color);
   else
+  {
+    /* Restore the original IPL-font texture before drawing an ASCII character. */
+    GX_LoadTexObj(&fontTexObj, GX_TEXMAP0);
     DrawChar((codepoint < 256) ? (unsigned char)codepoint : (unsigned char)'?', xpos, ypos, size, color);
+  }
 }
 
 #ifndef HW_RVL
@@ -298,7 +302,6 @@ static void GetFontTexel(s32 c,void *image,s32 pos,s32 stride)
 
 static void DrawChar(unsigned char c, int xpos, int ypos, int size, GXColor color)
 {
-  GX_LoadTexObj(&fontTexObj, GX_TEXMAP0);
   /* get font texture data */
   memset(fontTexture,0,fontHeader->cell_width * fontHeader->cell_height / 2);
   GetFontTexel(c,fontTexture,0,fontHeader->cell_width/2);
