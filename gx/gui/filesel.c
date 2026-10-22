@@ -164,6 +164,7 @@ static void selector_cb(void)
   int i;
   char text[MAXPATHLEN];
   int yoffset = 108;
+  int char_offset, byte_offset;
 
   /* Draw browser array */
   gxDrawRectangle(15, 108, 358, 26, 127, (GXColor)BG_COLOR_1);
@@ -186,19 +187,21 @@ static void selector_cb(void)
       gxDrawTexture(bar_over.texture,bar_over.x,yoffset+bar_over.y,bar_over.w,bar_over.h,255);
 
       /* scrolling text */
-      if ((string_offset/SCROLL_SPEED) >= strlen(filelist[i].filename))
+      if ((string_offset/SCROLL_SPEED) >= FONT_utf8_length(filelist[i].filename))
       {
         string_offset = 0;
       }
 
       if (string_offset)
       {
-        sprintf(text,"%s ",filelist[i].filename+string_offset/SCROLL_SPEED);
-        strncat(text, filelist[i].filename, string_offset/SCROLL_SPEED);
+        char_offset = string_offset / SCROLL_SPEED;
+        byte_offset = FONT_utf8_offset(filelist[i].filename, char_offset);
+        snprintf(text, sizeof(text), "%s ", filelist[i].filename + byte_offset);
+        strncat(text, filelist[i].filename, sizeof(text) - strlen(text) - 1);
       }
       else
       {
-        strcpy(text, filelist[i].filename);
+        snprintf(text, sizeof(text), "%s", filelist[i].filename);
       }
 
       /* print text */
