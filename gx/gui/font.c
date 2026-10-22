@@ -60,6 +60,8 @@ static u8 font_size[256];
 static u8 *hangulTexture;
 static GXTexObj hangulTexObj;
 
+static void DrawChar(unsigned char c, int xpos, int ypos, int size, GXColor color);
+
 static unsigned int FONT_decodeUTF8(const unsigned char *s, int *bytes)
 {
   unsigned int c = s[0];
@@ -91,12 +93,13 @@ int FONT_utf8_length(const char *string)
 int FONT_utf8_offset(const char *string, int characters)
 {
   int bytes, count = 0;
+  const char *base = string;
   while (*string && count < characters) {
     FONT_decodeUTF8((const unsigned char *)string, &bytes);
     string += bytes;
     count++;
   }
-  return count == characters ? (int)(string - base) : (int)(string - base);
+  return (int)(string - base);
 }
 
 static int FONT_charWidth(unsigned int codepoint, int size)
