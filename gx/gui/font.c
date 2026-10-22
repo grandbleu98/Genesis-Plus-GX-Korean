@@ -417,7 +417,7 @@ int FONT_write(char *string, int size, int x, int y, int max_width, GXColor colo
   ox = x;
 
   while (*string) {
-    if (*string == '\\n') {
+    if (*string == '\n') {
       x = ox;
       y += size;
       string++;
@@ -439,7 +439,7 @@ int FONT_writeCenter(char *string, int size, int x1, int x2, int y, GXColor colo
   unsigned int codepoint;
   char *p = string;
 
-  while (*p && *p != '\\n') {
+  while (*p && *p != '\n') {
     codepoint = FONT_decodeUTF8((const unsigned char *)p, &bytes);
     w += FONT_charWidth(codepoint, size);
     p += bytes;
@@ -449,7 +449,7 @@ int FONT_writeCenter(char *string, int size, int x1, int x2, int y, GXColor colo
   x2 -= (vmode->fbWidth / 2);
   y -= (vmode->efbHeight / 2);
 
-  while (*string && *string != '\\n') {
+  while (*string && *string != '\n') {
     codepoint = FONT_decodeUTF8((const unsigned char *)string, &bytes);
     w = FONT_charWidth(codepoint, size);
     if ((x + w) > x2) return strlen(string);
@@ -457,7 +457,7 @@ int FONT_writeCenter(char *string, int size, int x1, int x2, int y, GXColor colo
     x += w;
     string += bytes;
   }
-  if (*string == '\\n') {
+  if (*string == '\n') {
     string++;
     return FONT_writeCenter(string, size, x1, x2 + (vmode->fbWidth / 2), y + size + (vmode->efbHeight / 2), color);
   }
@@ -469,7 +469,7 @@ int FONT_alignRight(char *string, int size, int x, int y, GXColor color)
   int ox, w = 0, bytes;
   unsigned int codepoint;
   char *p = string;
-  while (*p && *p != '\\n') {
+  while (*p && *p != '\n') {
     codepoint = FONT_decodeUTF8((const unsigned char *)p, &bytes);
     w += FONT_charWidth(codepoint, size);
     p += bytes;
@@ -479,7 +479,7 @@ int FONT_alignRight(char *string, int size, int x, int y, GXColor color)
   ox = x;
   x -= w;
 
-  while (*string && *string != '\\n') {
+  while (*string && *string != '\n') {
     codepoint = FONT_decodeUTF8((const unsigned char *)string, &bytes);
     w = FONT_charWidth(codepoint, size);
     if ((x + w) > ox) return strlen(string);
@@ -487,7 +487,7 @@ int FONT_alignRight(char *string, int size, int x, int y, GXColor color)
     x += w;
     string += bytes;
   }
-  if (*string == '\\n') {
+  if (*string == '\n') {
     string++;
     return FONT_alignRight(string, size, ox + (vmode->fbWidth / 2), y + size + (vmode->efbHeight / 2), color);
   }
