@@ -45,5 +45,7 @@ extern void FONT_Shutdown(void);
 extern int  FONT_write(char *string, int size, int x, int y, int max_width, GXColor color);
 extern int  FONT_writeCenter(char *string, int size, int x1, int x2, int y, GXColor color);
 extern int  FONT_alignRight(char *string, int size, int x, int y, GXColor color);
+extern int  FONT_utf8_length(const char *string);
+extern int  FONT_utf8_offset(const char *string, int characters);
 
 #endif
