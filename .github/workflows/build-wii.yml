@@ -5,11 +5,13 @@ on:
   push:
     branches:
       - main
+      - korean-rom-filenames
     paths:
       - 'Makefile.wii'
       - 'core/**'
       - 'gx/**'
       - '.github/workflows/build-wii.yml'
+      - 'tools/**'
   workflow_dispatch:
 
 permissions:
@@ -22,6 +24,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Generate Hangul font data
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pil fonts-nanum
+          fc-cache -f
+          python3 tools/gen_hangul_font.py
 
       - name: Build Wii DOL
         run: |
