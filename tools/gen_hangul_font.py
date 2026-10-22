@@ -18,8 +18,9 @@ rows = []
 for codepoint in range(FIRST, LAST + 1):
     image = Image.new("L", (16 * SCALE, 16 * SCALE), 0)
     draw = ImageDraw.Draw(image)
-    # Avoid adding an artificial stroke: it closes gaps in dense syllables such as '불꽃'.
-    draw.text((8 * SCALE, 8 * SCALE), chr(codepoint), font=font, fill=255, anchor="mm")
+    # A light source-resolution stroke keeps thin lines visible after 16x16 reduction.
+    # A higher cutoff prevents dense syllables from merging into solid blocks.
+    draw.text((8 * SCALE, 8 * SCALE), chr(codepoint), font=font, fill=255, anchor="mm", stroke_width=1, stroke_fill=255)
     image = image.resize((16, 16), Image.Resampling.LANCZOS)
     pixels = image.load()
     packed = []
@@ -27,7 +28,7 @@ for codepoint in range(FIRST, LAST + 1):
         for byte_x in range(2):
             value = 0
             for bit in range(8):
-                if pixels[byte_x * 8 + bit, y] >= 112:
+                if pixels[byte_x * 8 + bit, y] >= 144:
                     value |= 0x80 >> bit
             packed.append(value)
     rows.append("  { " + ", ".join(f"0x{value:02X}" for value in packed) + " },")
