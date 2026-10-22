@@ -17,7 +17,7 @@ rows = []
 for codepoint in range(FIRST, LAST + 1):
     image = Image.new("L", (16, 16), 0)
     draw = ImageDraw.Draw(image)
-    draw.text((8, 8), chr(codepoint), font=font, fill=255, anchor="mm")
+    # A 1-pixel white stroke thickens the 1-bpp glyphs for better readability on Wii.\n    draw.text((8, 8), chr(codepoint), font=font, fill=255, anchor="mm", stroke_width=1, stroke_fill=255)
     pixels = image.load()
     packed = []
     for y in range(16):
